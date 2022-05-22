@@ -1,5 +1,4 @@
 const express = require('express')
-const port = require('./routes')
 
 module.exports = function(server) {
     const protectApi = express.Router();
@@ -9,5 +8,9 @@ module.exports = function(server) {
         res.send(`BACKEND is runner.`)
         );
 
+        const register = require('../api/registerService');
+        register.register(protectApi, 'register');
+
         server.use(express.static(require("path").join(__dirname, "../public")))
 }
+
