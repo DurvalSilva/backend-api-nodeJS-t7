@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-const args = require('args-parser')(process.argv)
-mongoose.Promise = require('bluebird')
+const args = require("args-parser")(process.argv)
+mongoose.Promise = require("bluebird")
 
 if(args.production)
-    module.exports = mongoose.connect('mongodb://usuario:@servidor.com.br:27017/senha')
+    module.exports = mongoose.connect('mongodb://usuario:@servidor.com.br:27017/senha', { useNewUrlParser: true })
 else
-module.exports = mongoose.connect('mongodb://localhost/banco_local')
+    module.exports = mongoose.connect('mongodb://localhost/banco_local')
 
 mongoose.Error.messages.general.required = "O campo '{PATH}' é obrigatório."
 mongoose.Error.messages.Number.min = "O '{PATH}' informado é menor que o limite mínimo de '{MIN}'."

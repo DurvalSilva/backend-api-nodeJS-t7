@@ -1,13 +1,12 @@
-const res = require('express/lib/response')
 const _ = require('lodash')
 const Register = require('./register')
-const fullNameRegex = [/^[/^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\s([A-zÀ-ÿ']\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$/]
+const fullNameRegex = /^[/^[A-ZÀ-Ÿ][A-zÀ-ÿ']+\s([A-zÀ-ÿ']\s?)*[A-ZÀ-Ÿ][A-zÀ-ÿ']+$/
 
 Register.methods(['get', 'post', 'put', 'delete'])
 Register.updateOptions({ new: true, runValidators: true })
 
 Register.after('post', sendErrosOrNext).after('put', sendErrosOrNext)
-Register.after('post', register).before('put', register)
+Register.before('post', register).before('put', register)
 
 function sendErrosOrNext(req, res, next) {
     const bundle = req.locals.bundle
@@ -40,12 +39,8 @@ function register(req, res, next) {
     const number = req.body.number || ''
     const complement = req.body.complement || ''
 
-    if (fullName == null || fullName == "") {
-        return res.status(400).send({ alert: ["O campo Nome Completo é obrigatório"] })
-    }
-
-    if (!fullName.match(fullNameRegex)) {
-        return res.status(400).send({ alert: ["Informe o Nome e o Sobrenome."] })
+    if(fullName == null || fullName == ""){
+        return res.status(400).send({ alert: ["O campo Nome Completo é obrigatório."]})
     }
 
     const newBody = new Register({
