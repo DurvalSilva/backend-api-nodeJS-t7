@@ -36,7 +36,11 @@ function register(req, res, next) {
   const phone = req.body.phone || ''
   const address = req.body.address || ''
   const number = req.body.number || ''
-  const complement = req.body.complement || '';
+  const complement = req.body.complement || ''
+
+  if(fullName == null || fullName ==""){
+    return res.status(400).send({ alert: ["O campo Nome Completo é obrigatório"]})
+}
 
   const newBody = new Register({
       fullName,
